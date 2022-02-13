@@ -14,8 +14,8 @@ function getProducts() {
 
 function addProduitAcceuil(products) {
     for (product of products) {
-      const dom = `
-            <a href="./product.html?_id=${product._id}">
+      const productAccueil = `
+            <a href="./product.html?id=${product._id}">
             <article>
                 <img src="${product.imageUrl}" alt="${product.altTxt}">
                <h3 class="productName">${product.name}</h3>
@@ -25,7 +25,7 @@ function addProduitAcceuil(products) {
           `;
       document
         .getElementById('items')
-        .insertAdjacentHTML('beforeend', dom);
+        .insertAdjacentHTML('beforeend', productAccueil);
     }
   }
 
