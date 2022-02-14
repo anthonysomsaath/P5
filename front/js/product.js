@@ -21,10 +21,21 @@ function getProduct(productId) {
 
 function addProduct(product) {
     document.title = product.name;
-    document.getElementById("title").innerHTML = product.name;
-    document.getElementById("description").innerHTML = product.description;
-    document.getElementById("price").innerHTML = product.price;
-    document.getElementsByClassName("item__img").innerHTML = 
+    document.getElementById("title").textContent = product.name;
+    document.getElementById("description").textContent = product.description;
+    document.getElementById("price").textContent = product.price;
+    document.getElementsByClassName("item__img")[0].innerHTML = 
     `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
+
+    let select = document.getElementById("colors")
+    product.colors.forEach((colors) => {
+      let options = document.createElement("option");
+
+      options.innerHTML = `${colors}`;
+      options.value = `${colors}`;
+
+      select.appendChild(options);
+    });
+    
    
   }
