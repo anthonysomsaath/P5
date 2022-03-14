@@ -11,31 +11,35 @@ let localStorageProducts = JSON.parse(
     await localStorageProducts; 
     console.log(localStorageProducts);
   
-    cart__items.innerHTML = localStorageProducts.map(
-      (localStorageProducts) => `
-    <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-                  <div class="cart__item__img">
-                    <img src="${localStorageProducts.image}" alt="${localStorageProducts.alt}">
-                  </div>
-                  <div class="cart__item__content">
-                    <div class="cart__item__content__description">
-                      <h2>${localStorageProducts.name}</h2>
-                      <p>${localStorageProducts.color}</p>
-                      <p>${localStorageProducts.price}</p>
-                    </div>
-                    <div class="cart__item__content__settings">
-                      <div class="cart__item__content__settings__quantity">
-                        <p>Qté :</p>
-                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${localStorageProducts.quantity}>
-                      </div>
-                      <div class="cart__item__content__settings__delete">
-                        <p class="deleteItem">Supprimer</p>
-                      </div>
-                    </div>
-                  </div>
-                </article>
-    `)
-  }
+    function cartItemDisplay(localStorageProducts) {
+      let str = '';
+      localStorageProducts.forEach((localStorageProducts) => {
+        str += `<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+        <div class="cart__item__img">
+          <img src="${localStorageProducts.image}" alt="${localStorageProducts.alt}">
+        </div>
+        <div class="cart__item__content">
+          <div class="cart__item__content__description">
+            <h2>${localStorageProducts.name}</h2>
+            <p>${localStorageProducts.color}</p>
+            <p>${localStorageProducts.price}</p>
+          </div>
+          <div class="cart__item__content__settings">
+            <div class="cart__item__content__settings__quantity">
+              <p>Qté :</p>
+              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${localStorageProducts.quantity}>
+            </div>
+            <div class="cart__item__content__settings__delete">
+              <p class="deleteItem">Supprimer</p>
+            </div>
+          </div>
+        </div>
+      </article>
+`;
+      });
+      document.querySelector(".cart__items").innerHTML = str;
+    }
+    cartItemDisplay()}
   };
   cartDisplay();
 
@@ -66,14 +70,32 @@ function getTotalPrice(){
   
   const price = document.getElementById("totalPrice");
   price.textContent = getTotalPrice();
+  
+  const removeCart = document.getElementsByClassName("cart__item__content__settings__delete");
 
-  var removeCart = document.getElementsByClassName("cart__item__content__settings__delete")
-  console.log(removeCart);
-  for (var i = 0; i < removeCart.length; i++) {
-    var removeButton = removeCart[i]
-    button.addEventListener("click", function(event) {
-      var buttonClicked = event.target
-      buttonClicked.parentElement.parentElement.parentElement.remove()
-    })
+  for (let i = 0; i < removeCart.length; i++) {
+  let removeButton = removeCart[i];
+  removeButton.addEventListener("click", function(event, index) {
+    event.preventDefault();
+    const buttonClicked = event.target;
+    const products = localStorageProducts.filter((product, iterator) => index !== iterator);
+    localStorage.setItem("localStorageProducts", JSON.stringify(products));
+    location.reload(); 
+ });
+}
+
+  const qttModif = document.querySelectorAll(".itemQuantity");
+
+  for (let i = 0; i < qttModif.length; i++){
+      qttModif[i].addEventListener("change" , function(event) {
+          event.preventDefault();
+          let quantityModif = localStorageProducts[i].quantity;
+          let qttModifValue = qttModif[i].valueAsNumber;
+          const resultFind = produitLocalStorage.find((el) => el.qttModifValue !== quantityModif);
+          resultFind.quantity = qttModifValue;
+          localStorageProducts[i].quantity = resultFind.quantity;
+          localStorage.setItem("produit", JSON.stringify(localStorageProducts));
+          location.reload();
+      })
   }
 
