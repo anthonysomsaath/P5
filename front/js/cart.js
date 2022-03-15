@@ -11,23 +11,23 @@ let localStorageProducts = JSON.parse(
     await localStorageProducts; 
     console.log(localStorageProducts);
   
-    function cartItemDisplay(localStorageProducts) {
+    function cartItemDisplay() {
       let str = '';
-      localStorageProducts.forEach((localStorageProducts) => {
+      localStorageProducts.forEach((product) => {
         str += `<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
         <div class="cart__item__img">
-          <img src="${localStorageProducts.image}" alt="${localStorageProducts.alt}">
+          <img src="${product.image}" alt="${product.alt}">
         </div>
         <div class="cart__item__content">
           <div class="cart__item__content__description">
-            <h2>${localStorageProducts.name}</h2>
-            <p>${localStorageProducts.color}</p>
-            <p>${localStorageProducts.price}</p>
+            <h2>${product.name}</h2>
+            <p>${product.color}</p>
+            <p>${product.price}</p>
           </div>
           <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
               <p>Qté :</p>
-              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${localStorageProducts.quantity}>
+              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value=${product.quantity}>
             </div>
             <div class="cart__item__content__settings__delete">
               <p class="deleteItem">Supprimer</p>
@@ -37,7 +37,7 @@ let localStorageProducts = JSON.parse(
       </article>
 `;
       });
-      document.querySelector(".cart__items").innerHTML = str;
+      cartStatus.innerHTML = str;
     }
     cartItemDisplay()}
   };
@@ -71,15 +71,16 @@ function getTotalPrice(){
   const price = document.getElementById("totalPrice");
   price.textContent = getTotalPrice();
   
-  const removeCart = document.getElementsByClassName("cart__item__content__settings__delete");
+  const removeButton = document.querySelectorAll(".deleteItem");
 
-  for (let i = 0; i < removeCart.length; i++) {
-  let removeButton = removeCart[i];
-  removeButton.addEventListener("click", function(event, index) {
+  for (let i = 0; i < removeButton.length; i++) {
+  removeButton[i].addEventListener("click", (event) => {
+    console.log("clicked");
     event.preventDefault();
-    const buttonClicked = event.target;
-    const products = localStorageProducts.filter((product, iterator) => index !== iterator);
-    localStorage.setItem("localStorageProducts", JSON.stringify(products));
+    let idRemove = localStorageProducts[i].id;
+    let colorRemove = localStorageProducts[i].color;
+    localStorageProducts = localStorageProducts.filter( el => el.id !== idRemove || el.color !== colorRemove );
+    localStorage.setItem("localStorageProducts", JSON.stringify(localStorageProducts));
     location.reload(); 
  });
 }
@@ -91,10 +92,10 @@ function getTotalPrice(){
           event.preventDefault();
           let quantityModif = localStorageProducts[i].quantity;
           let qttModifValue = qttModif[i].valueAsNumber;
-          const resultFind = produitLocalStorage.find((el) => el.qttModifValue !== quantityModif);
+          const resultFind = localStorageProducts.find((el) => el.qttModifValue !== quantityModif);
           resultFind.quantity = qttModifValue;
           localStorageProducts[i].quantity = resultFind.quantity;
-          localStorage.setItem("produit", JSON.stringify(localStorageProducts));
+          localStorage.setItem("localStorageProducts", JSON.stringify(localStorageProducts));
           location.reload();
       })
   }
