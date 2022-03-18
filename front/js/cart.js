@@ -3,12 +3,11 @@ let localStorageProducts = JSON.parse(
   );
   const cartStatus = document.querySelector("#cart__items");
 
-  const cartDisplay = async () => {
+  function cartDisplay() {
     if (localStorageProducts === null){
     const emptyCart = `<p>Votre panier est vide</p>`;
     cartStatus.innerHTML = emptyCart;
 } else {
-    await localStorageProducts; 
     console.log(localStorageProducts);
   
     function cartItemDisplay() {
@@ -74,8 +73,7 @@ function getTotalPrice(){
   const removeButton = document.querySelectorAll(".deleteItem");
 
   for (let i = 0; i < removeButton.length; i++) {
-  removeButton[i].addEventListener("click", (event) => {
-    console.log("clicked");
+  removeButton[i].addEventListener("click", function(event) {
     event.preventDefault();
     let idRemove = localStorageProducts[i].id;
     let colorRemove = localStorageProducts[i].color;
@@ -100,3 +98,55 @@ function getTotalPrice(){
       })
   }
 
+  function getForm (){
+    let form = document.querySelector(".cart__order__form");
+    let emailForm = new RegExp("[a-z|1-9]{2,}[@][a-z]{2,}[\.][a-z]{2,3}");
+    let charForm = new RegExp("[A-Z][a-z]{2,}");
+    let addressForm = new RegExp(".{7,60}");
+
+    form.firstName.addEventListener('change', () => {
+      let firstNameError = document.getElementById("firstNameErrorMsg");
+      let inputFirstName = document.getElementById("firstName");
+      if (charForm.test(inputFirstName.value)) {
+          firstNameError.innerHTML = '';
+      } else {
+          firstNameError.innerHTML = 'Veuillez renseigner un prénom valide.';
+      }
+  });
+    form.lastName.addEventListener('change', ()=>{
+      let lastNameError = document.getElementById("lastNameErrorMsg");
+      let inputLastName = document.getElementById("lastName");
+      if (charForm.test(inputLastName.value)) {
+          lastNameError.innerHTML = '';
+      } else {
+          lastNameError.innerHTML = 'Veuillez renseigner un nom valide.';
+      }
+  });
+    form.address.addEventListener('change', ()=> {
+      let addressError = document.getElementById("addressNameErrorMsg");
+      let inputAddress = document.getElementById("address");
+      if (addressForm.test(inputAddress.value)) {
+          addressError.innerHTML = '';
+      } else {
+          addressError.innerHTML = 'Veuillez renseigner une adresse valide.';
+      }
+    });
+    form.city.addEventListener('change', ()=> {
+      let cityError = document.getElementById("cityErrorMsg");
+      let inputCity = document.getElementById("city");
+      if (charForm.test(inputCity.value)) {
+          cityError.innerHTML = '';
+      } else {
+          cityError.innerHTML = 'Veuillez renseigner une adresse e-mail valide.';
+      }
+  });
+    form.email.addEventListener('change', ()=> {
+      let emailError = document.getElementById("emailErrorMsg");
+      let inputEmail = document.getElementById("email");
+      if (emailForm.test(inputEmail.value)) {
+          emailError.innerHTML = '';
+      } else {
+          emailError.innerHTML = 'Veuillez renseigner votre email.';
+      }
+  });
+  }
