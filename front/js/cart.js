@@ -137,7 +137,7 @@ function getTotalPrice(){
       if (charForm.test(inputCity.value)) {
           cityError.innerHTML = '';
       } else {
-          cityError.innerHTML = 'Veuillez renseigner une adresse e-mail valide.';
+          cityError.innerHTML = 'Veuillez renseigner une ville valide.';
       }
   });
     form.email.addEventListener('change', ()=> {
@@ -146,7 +146,8 @@ function getTotalPrice(){
       if (emailForm.test(inputEmail.value)) {
           emailError.innerHTML = '';
       } else {
-          emailError.innerHTML = 'Veuillez renseigner votre email.';
+          emailError.innerHTML = 'Veuillez renseigner une adresse email valide.';
       }
   });
   }
+  getForm();
