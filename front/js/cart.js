@@ -98,10 +98,10 @@ function getTotalPrice(){
       })
   }
 
-  function getForm (){
+  function checkForm (){
     let form = document.querySelector(".cart__order__form");
     let emailForm = new RegExp("[a-z|1-9]{2,}[@][a-z]{2,}[\.][a-z]{2,3}");
-    let charForm = new RegExp("[A-Z][a-z]{2,}");
+    let charForm = new RegExp("[a-zA-Z ,.'-]+");
     let addressForm = new RegExp(".{7,60}");
 
     form.firstName.addEventListener('change', () => {
@@ -123,7 +123,7 @@ function getTotalPrice(){
       }
   });
     form.address.addEventListener('change', ()=> {
-      let addressError = document.getElementById("addressNameErrorMsg");
+      let addressError = document.getElementById("addressErrorMsg");
       let inputAddress = document.getElementById("address");
       if (addressForm.test(inputAddress.value)) {
           addressError.innerHTML = '';
@@ -150,4 +150,53 @@ function getTotalPrice(){
       }
   });
   }
-  getForm();
+  checkForm();
+
+const orderButton = document.getElementById("order");
+orderButton.addEventListener("click", (event)=> {
+  event.preventDefault(); {
+        if (localStorageProducts) {
+        if (firstName !=='' && lastName !=='' && address !=='' && city !=='' && email !=='') {
+        
+        const contact = {
+          firstName : document.getElementById('firstName').value,
+          lastName : document.getElementById('lastName').value,
+          address : document.getElementById('address').value,
+          city : document.getElementById('city').value,
+          email : document.getElementById('email').value
+        }
+        
+        let products = [];
+        if (localStorageProducts) {
+        for (let i = 0; i<localStorageProducts.length;i++) {
+            products.push(localStorageProducts[i].id);
+        }}
+        
+        const sendFormData = {
+          contact,
+          products,
+        }
+        
+        const options = {
+          method: 'POST',
+          body: JSON.stringify(sendFormData),
+          headers: { 
+            'Content-Type': 'application/json',
+          }
+        };
+        
+        fetch("http://localhost:3000/api/products/order", options)
+            .then(response => response.json())
+            .then(data => {
+            localStorage.setItem('orderId', data.orderId);
+            document.location.href = 'confirmation.html?id='+ data.orderId;
+          });
+        
+        }
+        else{
+          alert('Veuillez remplir tous les champs.')}
+        }
+        else{
+          alert('Votre panier est vide.');
+        }}
+        }); 
