@@ -48,7 +48,7 @@ function addToCart(product) {
       const colorProd = colorOption.value;
       const quantityProd = quantityOption.value;
       const prodOptions = {
-        id : product.id,
+        id : product._id,
         name : product.name,
         color : colorProd,
         quantity : Number(quantityProd),
@@ -72,7 +72,9 @@ function addToCart(product) {
       });
       if (!filled) {
         localStorageProducts.push(prodOptions);
+        
       }
+      console.log(localStorageProducts);
       localStorage.setItem('localStorageProducts',JSON.stringify(localStorageProducts));
   })
 }

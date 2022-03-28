@@ -169,6 +169,7 @@ orderButton.addEventListener("click", (event)=> {
         let products = [];
         if (localStorageProducts) {
         for (let i = 0; i<localStorageProducts.length;i++) {
+            console.log(localStorageProducts);
             products.push(localStorageProducts[i].id);
         }}
         
@@ -184,7 +185,7 @@ orderButton.addEventListener("click", (event)=> {
             'Content-Type': 'application/json',
           }
         };
-        
+        console.log(options);
         fetch("http://localhost:3000/api/products/order", options)
             .then(response => response.json())
             .then(data => {
