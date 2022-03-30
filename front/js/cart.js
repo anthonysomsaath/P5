@@ -1,8 +1,10 @@
+/*Récupérer objets dans le local storage*/
 let localStorageProducts = JSON.parse(
     localStorage.getItem('localStorageProducts')
   );
   const cartStatus = document.querySelector("#cart__items");
 
+/*Afficher produits du panier sur la page*/
   function cartDisplay() {
     if (localStorageProducts === null){
     const emptyCart = `<p>Votre panier est vide</p>`;
@@ -42,7 +44,7 @@ let localStorageProducts = JSON.parse(
   };
   cartDisplay();
 
-
+/*Récupérer la quantité totale des produits dans le panier*/
 function getTotalQuantity(){
 
     let totalQuantity = 0;
@@ -54,7 +56,8 @@ function getTotalQuantity(){
   }
   const quantity = document.getElementById("totalQuantity");
   quantity.textContent = getTotalQuantity();
-  
+
+/*Calcul du prix total des produits dans le panier*/
 function getTotalPrice(){
   
     let totalPrice = 0;
@@ -70,6 +73,7 @@ function getTotalPrice(){
   const price = document.getElementById("totalPrice");
   price.textContent = getTotalPrice();
   
+  /*Supprimer produit du panier*/
   const removeButton = document.querySelectorAll(".deleteItem");
 
   for (let i = 0; i < removeButton.length; i++) {
@@ -83,6 +87,7 @@ function getTotalPrice(){
  });
 }
 
+  /*Modifier la quantité d'un produit existant dans le panier*/
   const qttModif = document.querySelectorAll(".itemQuantity");
 
   for (let i = 0; i < qttModif.length; i++){
@@ -98,6 +103,7 @@ function getTotalPrice(){
       })
   }
 
+  /*Vérification les champs du formulaire*/
   function checkForm (){
     let form = document.querySelector(".cart__order__form");
     let emailForm = new RegExp("[a-z|1-9]{2,}[@][a-z]{2,}[\.][a-z]{2,3}");
@@ -152,12 +158,15 @@ function getTotalPrice(){
   }
   checkForm();
 
+/*Stockage des infos du client*/
 const orderButton = document.getElementById("order");
 orderButton.addEventListener("click", (event)=> {
   event.preventDefault(); {
+        /*Condition d'un panier rempli*/
         if (localStorageProducts) {
+        /*Condition de tous les champs du formulaire remplis*/
         if (firstName !=='' && lastName !=='' && address !=='' && city !=='' && email !=='') {
-        
+      
         const contact = {
           firstName : document.getElementById('firstName').value,
           lastName : document.getElementById('lastName').value,
@@ -173,11 +182,11 @@ orderButton.addEventListener("click", (event)=> {
             products.push(localStorageProducts[i].id);
         }}
         
+        /*Info du client et de son panier stocké dans un objet*/
         const sendFormData = {
           contact,
           products,
         }
-        
         const options = {
           method: 'POST',
           body: JSON.stringify(sendFormData),

@@ -1,4 +1,6 @@
 /* Afficher produits */
+
+  /*Récupérer info produits dans api*/
 function getProducts() {
     fetch('http://localhost:3000/api/products')
       .then((response) => response.json())
@@ -12,6 +14,7 @@ function getProducts() {
   }
   getProducts();
 
+  /*Intégrer les produits dans la page*/
   function createProducts(products) {
     let dom = '';
     for (let product of products) {
